@@ -22,6 +22,7 @@ type Options struct {
 	port       int
 	list       io.ReadCloser
 	file       *os.File
+	hosts	   string
 
 	user string
 	host string
@@ -38,6 +39,8 @@ func Parse() *Options {
 	flag.BoolVar(&opt.verbose, "v", false, "")
 	flag.StringVar(&opt.output, "o", "", "")
 	flag.StringVar(&opt.wordlist, "w", "", "")
+	flag.StringVar(&opt.hosts, "h", "", "")
+	flag.StringVar(&opt.user, "u", "root", "")
 	flag.DurationVar(&opt.timeout, "t", opt.timeout, "")
 
 	flag.Usage = func() {

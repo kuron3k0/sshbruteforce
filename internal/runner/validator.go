@@ -12,25 +12,27 @@ import (
 func (opt *Options) validate() error {
 	var errFile error
 
-	if flag.Arg(0) != "" {
-		uhost = strings.SplitN(flag.Arg(0), "@", 2)
-	} else {
-		return errors.New("Please define a target server")
-	}
-
-	if len(uhost) < 2 {
-		usr, err := user.Current()
-		if err != nil {
-			opt.user = "root"
+	if opt.hosts == "" {
+		if flag.Arg(0) != "" {
+			uhost = strings.SplitN(flag.Arg(0), "@", 2)
 		} else {
-			opt.user = usr.Username
+			return errors.New("Please define a target server")
 		}
-		opt.host = uhost[0]
-	} else {
-		opt.user = uhost[0]
-		opt.host = uhost[1]
+	
+		if len(uhost) < 2 {
+			usr, err := user.Current()
+			if err != nil {
+				opt.user = "root"
+			} else {
+				opt.user = usr.Username
+			}
+			opt.host = uhost[0]
+		} else {
+			opt.user = uhost[0]
+			opt.host = uhost[1]
+		}
 	}
-
+	
 	if opt.wordlist != "" {
 		f, err := os.Open(opt.wordlist)
 		if err != nil {
